@@ -1,0 +1,253 @@
+openapi: 3.0.1
+info:
+  title: miniblog api definition
+  description: The API for the miniblog project
+  contact:
+    name: mingz-wang
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /login:
+    post:
+      tags:
+        - users
+      description: user login
+      operationId: login
+      responses:
+        200:
+          description: successfully login
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+  /users:
+    get:
+      tags:
+        - users
+      description: list users
+      operationId: listUsers
+      parameters:
+        - name: offset
+          in: query
+          schema: {}
+        - name: limit
+          in: query
+          schema: {}
+      responses:
+        200:
+          description: successfully list users
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+    post:
+      tags:
+        - users
+      description: create user
+      operationId: createUser
+      responses:
+        200:
+          description: successfully create user
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+  /users/{name}:
+    get:
+      tags:
+        - users
+      description: get user
+      operationId: getUser
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema: {}
+      responses:
+        200:
+          description: successfully get user
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+    put:
+      tags:
+        - users
+      description: update user
+      operationId: updateUser
+      responses:
+        200:
+          description: successfully update user
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+    delete:
+      tags:
+        - users
+      description: delete user
+      operationId: deleteUser
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema: {}
+      responses:
+        200:
+          description: successfully delete user
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+  /users/{name}/change-password:
+    put:
+      tags:
+        - users
+      description: update user password
+      operationId: changePassword
+      responses:
+        200:
+          description: successfully update user password
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+  /posts:
+    get:
+      tags:
+        - posts
+      description: list posts
+      operationId: listPosts
+      parameters:
+        - name: offset
+          in: query
+          schema: {}
+        - name: limit
+          in: query
+          schema: {}
+      responses:
+        200:
+          description: successfully list posts
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+    post:
+      tags:
+        - posts
+      description: create blog post
+      operationId: createPost
+      responses:
+        200:
+          description: successfully create post
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+    delete:
+      tags:
+        - posts
+      description: delete posts
+      operationId: deletePosts
+      parameters:
+        - name: postID
+          in: query
+          schema: {}
+      responses:
+        200:
+          description: successfully delete posts
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+  /posts/{postID}:
+    get:
+      tags:
+        - posts
+      description: get post
+      operationId: getPost
+      parameters:
+        - name: postID
+          in: path
+          required: true
+          schema: {}
+      responses:
+        200:
+          description: successfully get post
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+    put:
+      tags:
+        - posts
+      description: update post
+      operationId: updatePost
+      responses:
+        200:
+          description: successfully update post
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+    delete:
+      tags:
+        - posts
+      description: delete post
+      operationId: deletePost
+      parameters:
+        - name: postID
+          in: path
+          required: true
+          schema: {}
+      responses:
+        200:
+          description: successfully delete post
+          content: {}
+        400:
+          description: request failed due to client-side problem
+          content: {}
+        500:
+          description: request failed due to server-side problem
+          content: {}
+components: {}
