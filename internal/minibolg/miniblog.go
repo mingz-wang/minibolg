@@ -1,9 +1,11 @@
 package miniblog
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var cfgFile string
@@ -55,6 +57,8 @@ Find more miniblog information at:
 
 // run 函数是实际的业务代码入口函数.
 func run() error {
-	fmt.Println("Hello World!")
+	// 打印所有的配置项及其值
+	settings, _ := json.Marshal(viper.AllSettings())
+	fmt.Println(string(settings))
 	return nil
 }
