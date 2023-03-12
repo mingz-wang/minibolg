@@ -72,7 +72,7 @@ func run() error {
 	g := gin.New()
 
 	// gin.Recovery() 中间件，用来捕获任何 panic，并恢复
-	mws := []gin.HandlerFunc{gin.Recovery(), mw.RequestID()}
+	mws := []gin.HandlerFunc{gin.Recovery(), mw.RequestID(), mw.Cors, mw.NoCache, mw.Secure}
 
 	g.Use(mws...)
 
