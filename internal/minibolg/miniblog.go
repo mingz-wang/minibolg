@@ -1,9 +1,14 @@
 package miniblog
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -97,5 +102,25 @@ func run() error {
 		log.Fatalw(err.Error())
 	}
 
+	// 等待中断信号优雅地关闭服务器（设置 5 秒的超时时间）
+	quit := make(chan os.Signal, 1)
+	// kill 会默认发送 syscall.SIGTERM 信号
+	// kill -2 会发送 syscall.SIGINT 信号，常用的 Ctrl+C 组合 就是触发系统发送 syscall.SIGINT 信号
+	// kill -9 发送 syscall.SIGKILL 信号，但是不能被捕获，所以不需要添加它
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM) // 信号监听, 不会阻塞
+	<-quit                                               // 阻塞在此，当接收到上述两种信号时才会往下执行
+	log.Infow("Shutting down server...")
+
+	// 创建 ctx 用于通知服务器 goroutine，他有 5 秒的时间来处理原有的请求
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// 5 秒后，强制关闭服务器
+	if err := httpsrv.Shutdown(ctx); err != nil {
+		log.Errorw("Server forced to shutdown:", err)
+		return err
+	}
+
+	log.Infow("Server exiting")
 	return nil
 }
