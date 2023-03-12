@@ -1,11 +1,13 @@
 package log
 
 import (
+	"context"
 	"sync"
 	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"minibolg/internal/pkg/known"
 )
 
 // Logger 定义了 miniblog 项目的日志接口. 该接口只包含了支持的日志记录方法.
@@ -158,4 +160,25 @@ func Sync() { std.Sync() }
 
 func (l *zapLogger) Sync() {
 	_ = l.z.Sync()
+}
+
+// C 解析传入的 context，尝试提取关注的键值，并添加到 zap.Logger 结构化日志中.
+func C(ctx context.Context) *zapLogger {
+	return std.C(ctx)
+}
+
+func (l *zapLogger) C(ctx context.Context) *zapLogger {
+	lc := l.clone()
+
+	if requestID := ctx.Value(known.XRequestIDKey); requestID != nil {
+		lc.z = lc.z.With(zap.String(known.XRequestIDKey, requestID.(string)))
+	}
+
+	return lc
+}
+
+// clone 用于深拷贝一个 zapLogger 对象，以便在 C 方法中使用.
+func (l *zapLogger) clone() *zapLogger {
+	lc := *l
+	return &lc
 }

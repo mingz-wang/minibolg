@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"minibolg/internal/pkg/log"
+	mw "minibolg/internal/pkg/middleware"
 )
 
 var cfgFile string
@@ -70,6 +71,11 @@ func run() error {
 	// 创建 Gin 引擎
 	g := gin.New()
 
+	// gin.Recovery() 中间件，用来捕获任何 panic，并恢复
+	mws := []gin.HandlerFunc{gin.Recovery(), mw.RequestID()}
+
+	g.Use(mws...)
+
 	// 注册 404 Handler
 	g.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"code": 10003, "message": "404 Not Found"})
@@ -77,6 +83,7 @@ func run() error {
 
 	// 注册 /healthz handler.
 	g.GET("/healthz", func(c *gin.Context) {
+		log.C(c).Infow("healthz function called")
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
